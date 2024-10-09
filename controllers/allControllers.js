@@ -2,13 +2,12 @@ import { libraryModel } from "../models/libraryModels.js";
 
 export const addBook = async (req, res, next) => {
   try {
-    await libraryModel.create(req.body);
-    res.status(201).json("Item Added succesfully");
+    const newBook = await libraryModel.create(req.body);
+    res.status(201).json(newBook);
   } catch (error) {
     next(error);
   }
 };
-
 
 // handling the id's so that calling it will be a bit easier
 const dataManagement = async () => {
@@ -22,7 +21,6 @@ const dataManagement = async () => {
     __v: book.__v,
   }));
 };
-
 
 export const getBook = async (req, res, next) => {
   try {
@@ -87,7 +85,6 @@ export const deleteBook = async (req, res, next) => {
     // Delete the book using its MongoDB ID
     await libraryModel.findByIdAndDelete(bookToDelete._id);
 
-    console.log("Book Deleted Successfully");
     res.status(200).json("Book Deleted");
   } catch (error) {
     next(error);
